@@ -77,7 +77,9 @@ describe("V2Proposal", function () {
     const noFractional = (no / sum) * 100;
 
     process.stdout.write(
-      `\r    > YES: ${yesFractional.toFixed(2)}% NO: ${noFractional.toFixed(2)}%\n`
+      `\r    > YES: ${yesFractional.toFixed(2)}% NO: ${noFractional.toFixed(
+        2
+      )}%\n`
     );
 
     expect(yesFractional + noFractional).to.be.equal(100);

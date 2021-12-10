@@ -18,17 +18,26 @@ contract V2Proposal is Context {
 
     IERC721 private _nemo;
 
+    uint256 public endsAt;
+
     mapping(address => bool) private _voters;
 
     constructor(address nemo_) {
         _nemo = IERC721(nemo_);
+        endsAt = block.timestamp + 1 weeks;
     }
 
     function results() external view returns (uint256, uint256) {
         return (_yesTracker.current(), _noTracker.current());
     }
 
+    function isActive() public view returns (bool) {
+        return block.timestamp <= endsAt;
+    }
+
     function vote(Vote vote_) external onlyHolder onlyOnce {
+        require(isActive(), "V2Proposal: vote finished");
+
         if (vote_ == Vote.YES) _yesTracker.increment();
         if (vote_ == Vote.NO) _noTracker.increment();
 
